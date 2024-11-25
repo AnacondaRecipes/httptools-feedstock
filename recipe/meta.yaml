@@ -29,6 +29,7 @@ requirements:
 test:
   imports:
     - httptools
+    - httptools.parser
   requires:
     - pip
   commands:
