@@ -1,6 +1,6 @@
 {% set name = "httptools" %}
-{% set version = "0.5.0" %}
-{% set sha256 = "295874861c173f9101960bba332429bb77ed4dcd8cdf5cee9922eb00e4f6bc09" %}
+{% set version = "0.6.4" %}
+{% set sha256 = "4e93eee4add6493b59a5c514da98c939b244fce4a0d8879cd3f466562f4b7d5c" %}
 
 package:
   name: {{ name|lower }}
@@ -11,7 +11,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
@@ -22,12 +22,14 @@ requirements:
     - pip
     - setuptools
     - wheel
+    - cython >=0.29.24
   run:
     - python
 
 test:
   imports:
     - httptools
+    - httptools.parser
   requires:
     - pip
   commands:
