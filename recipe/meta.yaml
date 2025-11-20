@@ -1,39 +1,44 @@
 {% set name = "httptools" %}
-{% set version = "0.6.4" %}
-{% set sha256 = "4e93eee4add6493b59a5c514da98c939b244fce4a0d8879cd3f466562f4b7d5c" %}
+{% set version = "0.7.1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: abd72556974f8e7c74a259655924a717a2365b236c882c3f6f8a45fe94703ac9
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<39]
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
   host:
     - python
     - pip
-    - setuptools
-    - wheel
-    - cython >=0.29.24
+    - setuptools ==80.9.0
+    - cython >=3.1.0
   run:
     - python
 
 test:
+  source_files:
+    - tests
   imports:
     - httptools
     - httptools.parser
   requires:
     - pip
+    - pytest
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -v tests
 
 about:
   home: https://github.com/MagicStack/httptools
